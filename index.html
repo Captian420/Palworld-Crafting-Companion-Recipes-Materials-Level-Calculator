@@ -1,0 +1,824 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#07121b">
+<title>Palworld Crafting Recipes & Level Calculator | Palworld Crafting Companion</title>
+<meta name="description" content="Free Palworld crafting recipe calculator. Set your player level to see what you can craft, direct recipes, crafting chains, base materials, farming locations, coordinates, Pal drops, merchants, and Technology Tree unlocks.">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<link rel="canonical" href="https://captian420.github.io/Palworld-Crafting-Companion-Recipes-Materials-Level-Calculator/">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="manifest" href="./site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Palworld Crafting Companion">
+<meta property="og:title" content="Palworld Crafting Recipes & Level Calculator">
+<meta property="og:description" content="Filter Palworld crafting recipes by player level, expand crafting chains into base materials, and find where to get each resource.">
+<meta property="og:url" content="https://captian420.github.io/Palworld-Crafting-Companion-Recipes-Materials-Level-Calculator/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Palworld Crafting Recipes & Level Calculator">
+<meta name="twitter:description" content="Free Palworld crafting companion with level filtering, recipes, raw materials, farming locations, coordinates, and Technology Tree unlocks.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://captian420.github.io/Palworld-Crafting-Companion-Recipes-Materials-Level-Calculator/#website",
+      "url": "https://captian420.github.io/Palworld-Crafting-Companion-Recipes-Materials-Level-Calculator/",
+      "name": "Palworld Crafting Companion",
+      "description": "Palworld crafting recipes, level filtering, material breakdowns, farming locations and Technology Tree unlocks."
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://captian420.github.io/Palworld-Crafting-Companion-Recipes-Materials-Level-Calculator/#app",
+      "url": "https://captian420.github.io/Palworld-Crafting-Companion-Recipes-Materials-Level-Calculator/",
+      "name": "Palworld Crafting Companion",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires a modern web browser with JavaScript enabled.",
+      "description": "A free Palworld crafting calculator that filters recipes by player level and shows crafting chains, base materials, resource locations, coordinates, Pal drops, merchants, and technology unlocks.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
+}
+</script>
+<style>
+:root{
+  --bg:#07121b; --panel:#0d1d28; --panel2:#112836; --line:#24404f;
+  --text:#edf7fb; --muted:#94aebc; --cyan:#66d6e8; --amber:#f2bd63;
+  --green:#7dd6a4; --red:#ef8a8a; --purple:#c5a6ff; --shadow:0 14px 40px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:
+radial-gradient(circle at 20% 0%,rgba(34,112,132,.23),transparent 33rem),
+linear-gradient(180deg,#07121b,#081722 45%,#07121b);color:var(--text);min-height:100vh}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{color:var(--cyan)}
+.shell{max-width:1500px;margin:0 auto;padding:18px 22px 60px}
+.topbar{display:flex;align-items:center;gap:18px;justify-content:space-between;margin-bottom:16px}
+.brand h1{font-size:clamp(24px,3vw,38px);margin:0;letter-spacing:-.03em}
+.brand p{margin:5px 0 0;color:var(--muted);font-size:14px}
+.status{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.badge{padding:6px 10px;border-radius:999px;background:#102837;border:1px solid var(--line);font-size:12px;color:#bed5df}
+.badge.live{border-color:#286f59;color:#a4e7c2;background:#0e2b24}
+.badge.warn{border-color:#745f30;color:#f7d990;background:#2a2414}
+.tabs{display:flex;gap:8px;border-bottom:1px solid var(--line);margin-bottom:18px;overflow:auto}
+.tab{border:0;background:transparent;color:var(--muted);padding:12px 14px;border-bottom:3px solid transparent;white-space:nowrap}
+.tab.active{color:var(--text);border-bottom-color:var(--cyan)}
+.panel{display:none}.panel.active{display:block}
+.controls{background:rgba(13,29,40,.92);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow);position:sticky;top:8px;z-index:20;backdrop-filter:blur(10px)}
+.levelrow{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:20px;align-items:end}
+.levelbox{display:grid;grid-template-columns:44px 84px 44px;gap:8px;align-items:center}
+.levelbox button{height:44px;border-radius:10px;border:1px solid var(--line);background:#102b3a;color:var(--text);font-size:22px}
+.levelbox input[type=number]{height:44px;background:#071722;border:1px solid #315262;color:#fff;border-radius:10px;text-align:center;font-size:21px;font-weight:800;width:84px}
+.levelmeta{display:flex;align-items:center;gap:12px}
+.levelmeta label{font-size:13px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.levelmeta strong{color:var(--amber)}
+.levelslider{width:100%;accent-color:var(--cyan)}
+.searchrow{display:grid;grid-template-columns:1.5fr .85fr .7fr auto;gap:10px;margin-top:14px}
+.field{height:42px;border-radius:10px;background:#071722;border:1px solid #2b4857;color:var(--text);padding:0 12px}
+.check{display:flex;align-items:center;gap:8px;padding:0 8px;color:#b7cbd4;font-size:13px;white-space:nowrap}
+.chips{display:flex;gap:8px;overflow:auto;padding:13px 1px 1px}
+.chip{border:1px solid #294857;background:#0b202c;color:#abc1cc;border-radius:999px;padding:7px 11px;white-space:nowrap;font-size:13px}
+.chip.active{background:#153b49;color:#e9fbff;border-color:#3c8da3}
+.summaryline{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:17px 2px 10px;color:var(--muted);font-size:13px}
+.summaryline strong{color:var(--text)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.card{border:1px solid var(--line);background:linear-gradient(145deg,rgba(17,40,54,.97),rgba(10,27,38,.97));border-radius:16px;padding:14px;text-align:left;color:inherit;box-shadow:0 8px 24px rgba(0,0,0,.14);transition:.15s transform,.15s border-color;min-height:194px}
+.card:hover{transform:translateY(-2px);border-color:#3c7184}
+.cardhead{display:grid;grid-template-columns:62px 1fr auto;gap:12px;align-items:start}
+.iconbox{width:62px;height:62px;border-radius:13px;border:1px solid #2b4b5c;background:linear-gradient(145deg,#163445,#0a1c27);display:grid;place-items:center;overflow:hidden}
+.iconbox img{max-width:58px;max-height:58px;object-fit:contain}
+.iconfallback{font-weight:900;font-size:18px;color:#86b8ca}
+.card h3{margin:1px 0 5px;font-size:17px;line-height:1.2}
+.meta{color:var(--muted);font-size:12px;line-height:1.45}
+.lv{min-width:48px;text-align:center;border-radius:10px;padding:6px 7px;background:#172d38;border:1px solid #31505f;color:var(--amber);font-weight:900;font-size:12px}
+.lv.special{color:var(--purple)}
+.recipe{border-top:1px solid #203d4c;margin-top:12px;padding-top:10px}
+.recipe-label{font-size:10px;color:#7f9dab;text-transform:uppercase;font-weight:800;letter-spacing:.12em;margin-bottom:7px}
+.ingredients{display:flex;gap:6px;flex-wrap:wrap}
+.ingredient{font-size:11px;color:#cce0e8;background:#0a1c27;border:1px solid #223f4d;border-radius:7px;padding:4px 7px}
+.empty{padding:48px 18px;text-align:center;color:var(--muted);border:1px dashed #2a4655;border-radius:16px}
+.loader{padding:60px;text-align:center;color:#a9c3cf}
+.notice{border:1px solid #5e522a;background:#241f11;border-radius:12px;color:#e7d193;padding:11px 13px;font-size:13px;margin-bottom:14px}
+.techtoolbar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.tree{display:grid;gap:12px}
+.levelgroup{border:1px solid var(--line);border-radius:14px;background:#0b1e29;overflow:hidden}
+.leveltitle{display:flex;align-items:center;justify-content:space-between;padding:10px 13px;background:#102a38;position:sticky;top:0}
+.leveltitle strong{color:var(--amber)}
+.levelgroup.future{opacity:.58}
+.unlocks{display:flex;gap:6px;flex-wrap:wrap;padding:10px}
+.unlock{display:inline-flex;align-items:center;gap:6px;border:1px solid #2a4856;background:#091b25;border-radius:8px;padding:6px 8px;font-size:12px}
+.unlock img{width:25px;height:25px;object-fit:contain}
+.sources{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px}
+.sourcecard{background:#0d202b;border:1px solid var(--line);border-radius:14px;padding:15px}
+.sourcecard h3{margin:0 0 6px;font-size:16px}.sourcecard p{color:var(--muted);font-size:13px;line-height:1.55;margin:0 0 10px}
+.sourcecard a{word-break:break-all;font-size:12px}
+.about{margin-top:14px;background:#0b1c26;border:1px solid var(--line);border-radius:14px;padding:16px;color:#b9ced7;font-size:13px;line-height:1.6}
+.modalback{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:4vh 18px;overflow:auto}
+.modalback.open{display:flex}
+.modal{width:min(920px,100%);background:#0a1b25;border:1px solid #315061;border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.55);overflow:hidden}
+.modalhero{display:grid;grid-template-columns:92px 1fr auto;gap:16px;align-items:start;padding:20px;background:linear-gradient(135deg,#133445,#0b202c)}
+.modalhero .iconbox{width:92px;height:92px}.modalhero .iconbox img{max-width:88px;max-height:88px}
+.modalhero h2{margin:3px 0 7px;font-size:26px}
+.close{border:1px solid #375363;background:#0a1c27;color:#fff;width:38px;height:38px;border-radius:10px;font-size:20px}
+.modalbody{padding:18px 20px 24px}
+.desc{color:#b5c9d2;line-height:1.55;margin:0 0 14px}
+.factgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:8px;margin:12px 0 18px}
+.fact{padding:10px;border:1px solid #223e4c;border-radius:10px;background:#081821}
+.fact span{display:block;color:#7898a6;font-size:10px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.fact strong{font-size:13px}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.section{border:1px solid #254250;background:#0c202b;border-radius:13px;padding:13px}
+.section h3{margin:0 0 10px;font-size:15px}
+.recipe-list{display:grid;gap:6px}
+.reciperow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:7px 8px;background:#081923;border-radius:8px;font-size:13px}
+.reciperow strong{color:#f2d496}
+.qtyrow{display:flex;gap:8px;align-items:center;margin:0 0 10px;color:var(--muted);font-size:12px}
+.qtyrow input{width:75px;height:34px;background:#071722;border:1px solid #315061;border-radius:8px;color:#fff;padding:0 8px}
+.copybtn{border:1px solid #315061;background:#102a38;color:#d9edf5;border-radius:8px;padding:7px 10px;font-size:12px}
+.patch{margin-top:12px;border-left:3px solid var(--amber);padding:8px 10px;background:#211d12;color:#ddc88e;font-size:12px}
+.footer{margin-top:28px;color:#6f8995;font-size:11px;text-align:center}
+@media(max-width:800px){
+ .shell{padding:12px 12px 50px}.topbar{align-items:flex-start;flex-direction:column}.status{justify-content:flex-start}
+ .levelrow{grid-template-columns:1fr}.searchrow{grid-template-columns:1fr 1fr}.searchrow .field:first-child{grid-column:1/-1}
+ .twocol{grid-template-columns:1fr}.controls{position:static}.modalhero{grid-template-columns:75px 1fr auto}.modalhero .iconbox{width:75px;height:75px}
+}
+@media(max-width:520px){.searchrow{grid-template-columns:1fr}.searchrow .field:first-child{grid-column:auto}.grid{grid-template-columns:1fr}}
+
+.craftbreak{margin:14px 0}
+.treebox{display:grid;gap:8px}
+.craftnode{border:1px solid #254553;background:#081b25;border-radius:10px;padding:9px 10px}
+.craftnode .nodehead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.craftnode .nodename{font-weight:800;font-size:13px}
+.craftnode .nodeqty{color:#f0cf86;font-weight:900;white-space:nowrap}
+.craftnode .formula{color:#91aeba;font-size:11px;margin-top:5px;line-height:1.45}
+.craftchildren{margin:8px 0 0 15px;padding-left:12px;border-left:2px solid #244a5a;display:grid;gap:7px}
+.leafrow,.baserow{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center}
+.wherebtn{border:1px solid #346174;background:#103141;color:#bfeaf5;border-radius:8px;padding:5px 8px;font-size:11px;white-space:nowrap}
+.wherebtn:hover{border-color:#58a0b8;background:#143b4d}
+.locationpanel{margin-top:14px;border:1px solid #2c5262;background:linear-gradient(145deg,#0b202b,#081922);border-radius:14px;padding:14px}
+.locationpanel h3{margin:0 0 5px}
+.locationtitle{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+.locationgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+.locationcard{border:1px solid #294a58;background:#071822;border-radius:10px;padding:10px}
+.locationcard strong{display:block;font-size:13px;margin-bottom:3px}
+.coord{display:inline-block;margin:4px 0;padding:3px 7px;border-radius:6px;background:#172d37;color:#ffd991;font-weight:900;font-size:12px}
+.locationnote{font-size:11px;line-height:1.45;color:#93adba}
+.obtain-list{display:grid;gap:6px;margin-top:8px}
+.obtain{border:1px solid #223f4d;background:#081821;border-radius:8px;padding:7px 9px;font-size:11px;color:#bdd0d8;line-height:1.45}
+.obtain b{color:#eef8fb}
+.maplink{display:inline-flex;align-items:center;gap:6px;border:1px solid #3b6d7d;background:#113544;color:#d8f5fb;border-radius:8px;padding:7px 9px;text-decoration:none;font-size:11px;font-weight:800}
+.detailsbox{margin-top:10px;border-top:1px solid #244351;padding-top:9px}
+.detailsbox summary{cursor:pointer;color:#cbe2eb;font-size:12px;font-weight:800}
+.smallmuted{color:#7f9daa;font-size:11px;line-height:1.45}
+.section.full{margin-top:14px}
+
+</style>
+</head>
+<body>
+<noscript><div style="max-width:900px;margin:30px auto;padding:18px;font-family:system-ui;background:#10212d;color:#eef7fb;border-radius:12px">Palworld Crafting Companion is a free Palworld crafting recipe and level calculator. JavaScript is required to filter recipes by level, expand crafting chains, total base materials, and show farming locations and coordinates.</div></noscript>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <h1>Palworld Crafting Companion</h1>
+      <p>Palworld crafting recipes filtered by player level, with crafting chains, base materials, resource locations, coordinates, and Technology Tree unlocks.</p>
+    </div>
+    <div class="status">
+      <span id="dataStatus" class="badge warn">Loading live data…</span>
+      <span class="badge">Xbox / Game Pass</span>
+      <span class="badge">v1.0.5-era progression</span>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="craft">Crafting</button>
+    <button class="tab" data-tab="tech">Technology Tree</button>
+    <button class="tab" data-tab="sources">Sources & Notes</button>
+  </nav>
+
+  <section id="craft" class="panel active">
+    <div class="controls">
+      <div class="levelrow">
+        <div>
+          <div class="levelmeta"><label>Your Level</label><strong id="levelCaption">Level 25</strong></div>
+          <div class="levelbox">
+            <button id="levelDown" aria-label="Decrease level">−</button>
+            <input id="levelNum" type="number" min="1" max="80" value="25">
+            <button id="levelUp" aria-label="Increase level">+</button>
+          </div>
+        </div>
+        <input id="levelRange" class="levelslider" type="range" min="1" max="80" value="25">
+      </div>
+
+      <div class="searchrow">
+        <input id="search" class="field" type="search" placeholder="Search item, structure, station, or ingredient…">
+        <select id="mode" class="field">
+          <option value="through">Available through my level</option>
+          <option value="exact">New at this level</option>
+        </select>
+        <select id="sort" class="field">
+          <option value="level">Sort: Level</option>
+          <option value="name">Sort: Name</option>
+        </select>
+        <label class="check"><input id="showSpecial" type="checkbox"> Show schematic / special recipes</label>
+      </div>
+      <div id="categoryChips" class="chips"></div>
+    </div>
+
+    <div id="noticeArea"></div>
+    <div class="summaryline">
+      <div><strong id="resultCount">0</strong> craftable entries shown</div>
+      <div id="levelHint"></div>
+    </div>
+    <div id="craftGrid" class="grid"><div class="loader">Loading recipe data…</div></div>
+  </section>
+
+  <section id="tech" class="panel">
+    <div class="techtoolbar">
+      <input id="techSearch" class="field" style="min-width:280px" type="search" placeholder="Search technology unlocks…">
+      <select id="techVisibility" class="field">
+        <option value="all">All levels</option>
+        <option value="available">Available through my level</option>
+        <option value="future">Future levels</option>
+      </select>
+      <span class="badge">Current level: <strong id="techLevelBadge">25</strong></span>
+    </div>
+    <div class="notice">This view tracks level-gated craftable unlocks. It does not pretend you have spent the required Technology / Ancient Technology points.</div>
+    <div id="techTree" class="tree"><div class="loader">Loading technology tree…</div></div>
+  </section>
+
+  <section id="sources" class="panel">
+    <div class="sources">
+      <div class="sourcecard"><h3>Palworld.gg Technology Tree</h3><p>Primary reference for level placement and technology progression.</p><a target="_blank" rel="noreferrer" href="https://palworld.gg/technology-tree">https://palworld.gg/technology-tree</a></div>
+      <div class="sourcecard"><h3>Palworld.gg Items</h3><p>Item names, classifications, recipe relationships, and source imagery.</p><a target="_blank" rel="noreferrer" href="https://palworld.gg/items">https://palworld.gg/items</a></div>
+      <div class="sourcecard"><h3>Palworld.gg Weapons</h3><p>Weapon records and recipes.</p><a target="_blank" rel="noreferrer" href="https://palworld.gg/weapons">https://palworld.gg/weapons</a></div>
+      <div class="sourcecard"><h3>Palworld.gg Armor</h3><p>Armor records and recipes.</p><a target="_blank" rel="noreferrer" href="https://palworld.gg/armor">https://palworld.gg/armor</a></div>
+      <div class="sourcecard"><h3>Palworld.gg Structures</h3><p>Buildable structure data.</p><a target="_blank" rel="noreferrer" href="https://palworld.gg/structures">https://palworld.gg/structures</a></div>
+      <div class="sourcecard"><h3>GameWith Crafting</h3><p>Cross-check for current recipes, crafting stations, and recursive material trees.</p><a target="_blank" rel="noreferrer" href="https://gamewith.ai/palworld/en/recipe">https://gamewith.ai/palworld/en/recipe</a></div>
+      <div class="sourcecard"><h3>Palworld Fandom Crafting</h3><p>Supplemental crafting terminology/reference requested for this project.</p><a target="_blank" rel="noreferrer" href="https://palworld.fandom.com/wiki/Crafting">https://palworld.fandom.com/wiki/Crafting</a></div>
+      <div class="sourcecard"><h3>Machine-readable Palworld.gg snapshot</h3><p>The app loads the v1.0 recipe snapshot published by Maurixs, whose repository states the item/recipe/tech/icon data was extracted from Palworld.gg. Current patch changes are corrected in-app.</p><a target="_blank" rel="noreferrer" href="https://github.com/Maurixs/palworld-crafting-calculator">GitHub data snapshot</a></div>
+    </div>
+    <div class="about">
+      <strong>How availability is calculated:</strong> an item with its own Technology Level uses that level. A processed recipe with no individual technology node (for example, food or a refined material) inherits the minimum level of its required crafting station when that station is known. Schematic/drop-only or otherwise non-level-gated recipes are separated behind the “Show schematic / special recipes” option instead of being incorrectly shown at Level 1.<br><br>
+      <strong>Current-patch corrections:</strong> this build applies verified post-1.0 launch changes for Jetragon's Missile Launcher, Aquatic Construction Kit, Crude Oil Extractor, High-Pressure Crude Oil Extractor, and Large Power Generator. The baseline machine-readable dataset is from July 2026; current online references are used for those later recipe/progression changes.<br><br>
+      <strong>Acquisition & locations:</strong> the app now loads resource farming recommendations, item acquisition routes, merchant coordinates, and Pal habitat/alpha-location data from the v1.0 Palworld knowledge datasets. For very large world-node layers, the panel shows best coordinates locally and links to Palworld.gg's complete interactive layer rather than rendering thousands of rows.<br><br>
+      <strong>Icons:</strong> icons are loaded from the published Palworld.gg-derived sprite set. If an image fails to load, the app falls back to text initials instead of breaking the card.
+    </div>
+  </section>
+
+  <div class="footer">Unofficial fan utility. Palworld and its game assets belong to their respective rights holders. This tool is not affiliated with Pocketpair. <a href="https://github.com/Captian420/Palworld-Crafting-Companion-Recipes-Materials-Level-Calculator" target="_blank" rel="noreferrer">Source on GitHub</a>.</div>
+</div>
+
+<div id="modalBack" class="modalback" role="dialog" aria-modal="true" aria-label="Recipe details">
+  <div class="modal">
+    <div class="modalhero">
+      <div id="modalIcon" class="iconbox"></div>
+      <div><h2 id="modalName"></h2><div id="modalMeta" class="meta"></div></div>
+      <button id="modalClose" class="close" aria-label="Close">×</button>
+    </div>
+    <div class="modalbody">
+      <p id="modalDesc" class="desc"></p>
+      <div id="modalFacts" class="factgrid"></div>
+      <div class="qtyrow">Quantity to make: <input id="detailQty" type="number" min="1" max="9999" value="1"> <span id="batchHint"></span></div>
+      <div class="section full craftbreak">
+        <h3>Crafting Breakdown</h3>
+        <div class="smallmuted" style="margin-bottom:9px">Intermediate components stay visible instead of being flattened. Expand the chain all the way down to resources you actually gather.</div>
+        <div id="componentTree" class="treebox"></div>
+      </div>
+      <div class="twocol">
+        <div class="section"><h3>Direct Recipe</h3><div id="directList" class="recipe-list"></div></div>
+        <div class="section">
+          <div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><h3 style="margin:0">Base Material Totals</h3><button id="copyRaw" class="copybtn">Copy list</button></div>
+          <div id="rawList" class="recipe-list" style="margin-top:10px"></div>
+        </div>
+      </div>
+      <div id="acquisitionPanel" class="locationpanel"></div>
+      <div id="patchNote"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+const PRIMARY_URL = "https://cdn.jsdelivr.net/gh/Maurixs/palworld-crafting-calculator@main/palworld_items.json";
+const SECONDARY_URL = "https://cdn.jsdelivr.net/gh/beliarance/palworld-kb@main/data/items.json";
+const RESOURCE_URL = "https://cdn.jsdelivr.net/gh/beliarance/palworld-kb@main/data/resource_nodes.json";
+const PAL_LOCATIONS_URL = "https://cdn.jsdelivr.net/gh/beliarance/palworld-kb@main/data/pal_locations.json";
+const ICON_BASE = "https://cdn.jsdelivr.net/gh/Maurixs/palworld-crafting-calculator@main/icons/";
+
+const CATEGORIES = ["All","Weapons","Armor","Pal Gear","Structures","Production","Storage","Furniture","Food","Medicine","Ammo","Materials","Tools / Other"];
+
+const MAP_NODE_COUNTS = {
+  "ore":1555, "coal":497, "sulfur":257, "pure quartz":496, "paldium fragment":1173,
+  "soralite":208, "red berries":1939, "mushrooms":274, "crude oil":185
+};
+const MAP_LABELS = {"paldium fragment":"Paldium","red berries":"Red Berries"};
+
+const PATCH_OVERRIDES = {
+  "Jetragon's Missile Launcher": {
+    level:70,
+    materials:[
+      {name:"Leather",amount:70},{name:"Soralite Ingot",amount:48},
+      {name:"AI Core",amount:12},{name:"Paldium Fragment",amount:210}
+    ],
+    note:"Current-patch correction: moved to Technology Lv70 and recipe reduced/changed after the July 1.0 snapshot."
+  },
+  "Aquatic Construction Kit": {
+    level:23,
+    materials:[{name:"Cement",amount:30},{name:"Ingot",amount:10},{name:"Wooden Board",amount:15}],
+    note:"Current-patch correction: moved to Technology Lv23 with a substantially reduced recipe."
+  },
+  "Crude Oil Extractor": {
+    materials:[{name:"Pal Metal Ingot",amount:125},{name:"Circuit Board",amount:25}],
+    note:"Current-patch correction: building cost reduced after the July 1.0 snapshot."
+  },
+  "High-Pressure Crude Oil Extractor": {
+    materials:[
+      {name:"Pal Metal Ingot",amount:150},{name:"Circuit Board",amount:25},
+      {name:"Bio Battery",amount:25},{name:"Ancient Civilization Parts",amount:10}
+    ],
+    note:"Current-patch correction: building cost reduced after the July 1.0 snapshot."
+  },
+  "Large Power Generator": {
+    materials:[{name:"Pal Metal Ingot",amount:150},{name:"Electric Organ",amount:150}],
+    note:"Current-patch correction: building cost reduced after the July 1.0 snapshot."
+  }
+};
+
+// Small offline fallback so the interface remains usable even when opened without internet.
+// Live mode contains the full dataset.
+const DEMO_PRIMARY = {
+  "Axe_Tier_00": {names:{en:"Stone Axe"},description:"An axe for cutting wood.",creates_amount:1,stationKind:"weapon",stationKey:"Melee",isStructure:false,level:1,materials:[{dev_name:"Stone",name:"Stone",amount:5},{dev_name:"Wood",name:"Wood",amount:5}],icon:"T_itemicon_Weapon_Axe_Tier_00.png",craftable:true},
+  "WorkBench": {names:{en:"Primitive Workbench"},description:"A workbench for producing simple items.",creates_amount:1,stationKind:"structure",stationKey:"Product",isStructure:true,level:1,materials:[{dev_name:"Wood",name:"Wood",amount:2}],icon:"T_icon_buildObject_WorkBench.png",craftable:true},
+  "CampFire": {names:{en:"Campfire"},description:"Needed for cooking simple food.",creates_amount:1,stationKind:"structure",stationKey:"Food",isStructure:true,level:2,materials:[{dev_name:"Wood",name:"Wood",amount:10}],icon:"T_icon_buildObject_CampFire.png",craftable:true},
+  "PalSphere": {names:{en:"Pal Sphere"},description:"A basic sphere for capturing Pals.",creates_amount:1,stationKind:"item",stationKey:"SpecialWeapon",isStructure:false,level:2,materials:[{dev_name:"Pal_crystal_S",name:"Paldium Fragment",amount:1}],icon:"T_itemicon_PalSphere.png",craftable:true},
+  "Cloth": {names:{en:"Cloth"},description:"Cloth woven from Wool.",creates_amount:1,stationKind:"item",stationKey:"Material",isStructure:false,level:4,materials:[{dev_name:"Wool",name:"Wool",amount:2}],icon:"T_itemicon_Material_Cloth.png",craftable:true},
+  "CookingStove": {names:{en:"Cooking Pot"},description:"Allows a wider variety of meal preparation.",creates_amount:1,stationKind:"structure",stationKey:"Food",isStructure:true,level:17,materials:[{dev_name:"Processed_Wood",name:"Wooden Board",amount:5},{dev_name:"CopperIngot",name:"Ingot",amount:15},{dev_name:"FireOrgan",name:"Flame Organ",amount:3}],icon:"T_icon_buildObject_CookingStove.png",craftable:true},
+  "Cake": {names:{en:"Cake"},description:"A celebratory dish used at a Breeding Farm.",creates_amount:1,stationKind:"item",stationKey:"Food",isStructure:false,level:null,materials:[{dev_name:"Flour",name:"Flour",amount:5},{dev_name:"Berries",name:"Red Berries",amount:8},{dev_name:"Milk",name:"Milk",amount:7},{dev_name:"Egg",name:"Egg",amount:8},{dev_name:"Honey",name:"Honey",amount:2}],icon:"T_itemicon_Food_Cake.png",craftable:true},
+  "Flour": {names:{en:"Flour"},description:"Flour made from Wheat.",creates_amount:1,stationKind:"item",stationKey:"Food",isStructure:false,level:null,materials:[{dev_name:"Wheat",name:"Wheat",amount:3}],icon:"T_itemicon_Material_Flour.png",craftable:true},
+  "CopperIngot": {names:{en:"Ingot"},description:"Refined from Ore.",creates_amount:1,stationKind:"item",stationKey:"Material",isStructure:false,level:null,materials:[{dev_name:"CopperOre",name:"Ore",amount:2}],icon:"T_itemicon_Material_CopperIngot.png",craftable:true},
+  "Gunpowder2": {names:{en:"Gunpowder"},description:"Gunpowder used to make ammunition.",creates_amount:1,stationKind:"item",stationKey:"Material",isStructure:false,level:21,materials:[{dev_name:"Charcoal",name:"Charcoal",amount:2},{dev_name:"Sulfur",name:"Sulfur",amount:1}],icon:"T_itemicon_Material_Gunpowder2.png",craftable:true},
+  "HandGun_Default": {names:{en:"Handgun"},description:"A handgun with improved capacity and rapid fire.",creates_amount:1,stationKind:"weapon",stationKey:"Handgun",isStructure:false,level:28,materials:[{dev_name:"CopperIngot",name:"Ingot",amount:50},{dev_name:"PalOil",name:"High Quality Pal Oil",amount:15}],icon:"T_itemicon_Weapon_HandGun_Default.png",craftable:true}
+};
+const DEMO_SECONDARY = {
+  items:[
+    {name:"Cake",category:"ingredient",tech_level:null,recipe:{station:"Cooking Pot",materials:{"Flour":5,"Red Berries":8,"Milk":7,"Egg":8,"Honey":2}}},
+    {name:"Flour",category:"material",tech_level:null,recipe:{station:"Mill",materials:{"Wheat":3}}},
+    {name:"Ingot",category:"material",tech_level:null,recipe:{station:"Primitive Furnace",materials:{"Ore":2}}}
+  ],
+  stations:[
+    {name:"Primitive Workbench",tech_level:1},{name:"Campfire",tech_level:2},{name:"Pal Gear Workbench",tech_level:6},
+    {name:"Primitive Furnace",tech_level:10},{name:"Mill",tech_level:15},{name:"Cooking Pot",tech_level:17},
+    {name:"Weapon Workbench",tech_level:20},{name:"Production Assembly Line",tech_level:29}
+  ]
+};
+const DEMO_RESOURCES = {resources:[
+  {name:"Ore",best_locations:[{area:"Verdant Brook — elevated peak NE of Sealed Realm of the Guardian",coordinates:"(190, -40)",node_count:8,notes:"Classic ore + coal summit."}],other_sources:["Ore Mining Site","expeditions","dungeons"]},
+  {name:"Coal",best_locations:[{area:"Verdant Brook peak / Sealed Realm of the Guardian",coordinates:"(190, -41)",node_count:8,notes:"Strong coal + ore combo base."}],other_sources:["Coal Mine","Pal drops","expeditions"]}
+]};
+const DEMO_PALS = {pals:{
+  "Sparkit":{regions:["Windswept Hills"],day_night:"both",alpha_locations:[],other_sources:[]},
+  "Foxparks":{regions:["Windswept Hills"],day_night:"both",alpha_locations:[],other_sources:[]}
+}};
+
+let state = {
+  level: Number(localStorage.getItem("palCraftLevel") || 25),
+  category:"All", search:"", mode:"through", sort:"level", showSpecial:false,
+  items:[], byKey:new Map(), byName:new Map(), stationLevels:new Map(), secondaryByName:new Map(), resourceByName:new Map(), palLocations:{},
+  dataMode:"loading", selected:null, detailQty:1, acquisitionName:null
+};
+state.level = Math.max(1,Math.min(80,state.level));
+
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const norm = s => String(s||"").trim().toLowerCase();
+
+function categoryFor(x){
+  if(x.isStructure){
+    if(x.stationKey==="Furniture") return "Furniture";
+    if(x.stationKey==="Storage") return "Storage";
+    if(["Product","Food","Infrastructure"].includes(x.stationKey)) return "Production";
+    return "Structures";
+  }
+  if(x.stationKind==="weapon") return "Weapons";
+  if(x.stationKind==="armor") return "Armor";
+  if(x.stationKey==="Ammo") return "Ammo";
+  if(x.stationKey==="Food") return "Food";
+  if(x.stationKey==="Consume") return "Medicine";
+  if(x.stationKey==="Material") return "Materials";
+  if(x.stationKey==="Essential" || x.stationKey==="SpecialWeapon") return "Pal Gear";
+  if(x.stationKey==="Accessory") return "Armor";
+  return "Tools / Other";
+}
+
+function isSpecial(x){
+  if(x.stationKey==="Blueprint" || x.stationKey==="Accessory") return true;
+  const noOwnLevel = !Number.isFinite(x.directLevel) && !Number.isFinite(x.secondaryLevel);
+  if(noOwnLevel && ["weapon","armor"].includes(x.stationKind)) return true;
+  if(noOwnLevel && x.stationKey==="Essential") return true;
+  return false;
+}
+function iconUrl(x){ return x.icon ? ICON_BASE + encodeURIComponent(x.icon) : ""; }
+function initials(name){ return String(name||"?").split(/\s+/).slice(0,2).map(x=>x[0]).join("").toUpperCase(); }
+function iconHTML(x, cls=""){
+  const url=iconUrl(x);
+  if(!url) return `<span class="iconfallback">${initials(x.name)}</span>`;
+  return `<img class="${cls}" src="${url}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="iconfallback" style="display:none">${initials(x.name)}</span>`;
+}
+function lookupByName(name){ return state.byName.get(norm(name)); }
+
+function applyPatch(x){
+  const p = PATCH_OVERRIDES[x.name];
+  if(!p) return x;
+  x.patchNote = p.note || "";
+  if(Number.isFinite(p.level)){ x.directLevel=p.level; x.level=p.level; }
+  if(p.materials){
+    x.materials = p.materials.map(m=>{
+      const child=lookupByName(m.name);
+      return {name:m.name, amount:m.amount, dev_name:child?.key || null};
+    });
+  }
+  return x;
+}
+
+function buildData(primary, secondary){
+  state.stationLevels = new Map((secondary?.stations||[]).map(s=>[norm(s.name),Number(s.tech_level)]));
+  const secByName = new Map((secondary?.items||[]).map(i=>[norm(i.name),i]));
+  state.secondaryByName = secByName;
+  let items = Object.entries(primary).filter(([,v])=>v && v.craftable).map(([key,v])=>{
+    const name=v.names?.en || key;
+    const sec=secByName.get(norm(name));
+    const station=sec?.recipe?.station || null;
+    const directLevel=Number.isFinite(v.level)?Number(v.level):null;
+    const secondaryLevel=Number.isFinite(sec?.tech_level)?Number(sec.tech_level):null;
+    const stationLevel=station && Number.isFinite(state.stationLevels.get(norm(station))) ? state.stationLevels.get(norm(station)) : null;
+    return {
+      key,name,description:v.description||"",creates_amount:Number(v.creates_amount)||1,
+      stationKind:v.stationKind||"item",stationKey:v.stationKey||"Other",isStructure:!!v.isStructure,
+      level:v.level, directLevel, secondaryLevel, station, stationLevel,
+      materials:(v.materials||[]).map(m=>({dev_name:m.dev_name||null,name:m.name||m.dev_name||"Unknown",amount:Number(m.amount)||0})),
+      icon:v.icon||"", craftable:true
+    };
+  });
+  state.items=items;
+  state.byKey=new Map(items.map(x=>[x.key,x]));
+  state.byName=new Map(items.map(x=>[norm(x.name),x]));
+
+  // Apply current patch corrections after lookup maps exist.
+  items.forEach(applyPatch);
+
+  // Rebuild name map and calculate availability.
+  state.byName=new Map(items.map(x=>[norm(x.name),x]));
+  for(const x of items){
+    const levels=[x.directLevel,x.secondaryLevel,x.stationLevel].filter(Number.isFinite);
+    x.effectiveLevel=levels.length?Math.max(...levels):null;
+    x.special=isSpecial(x);
+    x.category=categoryFor(x);
+    x.availabilityKind = Number.isFinite(x.directLevel)||Number.isFinite(x.secondaryLevel) ? "Technology"
+      : x.special ? "Special / schematic"
+      : Number.isFinite(x.stationLevel) ? "Station recipe"
+      : "No level gate found";
+    x.searchText=norm([x.name,x.category,x.station,x.stationKey,...x.materials.map(m=>m.name)].join(" "));
+  }
+  state.items=items;
+  state.byKey=new Map(items.map(x=>[x.key,x]));
+}
+
+function available(x, level=state.level, allowSpecial=state.showSpecial){
+  if(x.special && !allowSpecial) return false;
+  if(Number.isFinite(x.effectiveLevel)) return x.effectiveLevel<=level;
+  return allowSpecial;
+}
+
+function filteredItems(){
+  let a=state.items.filter(x=>available(x));
+  if(state.mode==="exact") a=a.filter(x=>x.effectiveLevel===state.level);
+  if(state.category!=="All") a=a.filter(x=>x.category===state.category);
+  if(state.search) a=a.filter(x=>x.searchText.includes(norm(state.search)));
+  if(state.sort==="name") a.sort((a,b)=>a.name.localeCompare(b.name));
+  else a.sort((a,b)=>(a.effectiveLevel??999)-(b.effectiveLevel??999)||a.name.localeCompare(b.name));
+  return a;
+}
+
+function renderCategories(){
+  $("#categoryChips").innerHTML=CATEGORIES.map(c=>`<button class="chip ${state.category===c?"active":""}" data-cat="${c}">${c}</button>`).join("");
+  $$("#categoryChips .chip").forEach(b=>b.onclick=()=>{state.category=b.dataset.cat;render();});
+}
+
+function cardHTML(x){
+  const lv=Number.isFinite(x.effectiveLevel)?`Lv ${x.effectiveLevel}`:"Special";
+  const mini=x.materials.slice(0,4).map(m=>`<span class="ingredient">${escapeHTML(m.name)} ×${m.amount}</span>`).join("");
+  const more=x.materials.length>4?`<span class="ingredient">+${x.materials.length-4} more</span>`:"";
+  const station=x.station ? ` • ${escapeHTML(x.station)}` : "";
+  return `<button class="card" data-key="${escapeAttr(x.key)}">
+    <div class="cardhead">
+      <div class="iconbox">${iconHTML(x)}</div>
+      <div><h3>${escapeHTML(x.name)}</h3><div class="meta">${escapeHTML(x.category)}${station}<br>${escapeHTML(x.availabilityKind)}</div></div>
+      <div class="lv ${x.special?"special":""}">${lv}</div>
+    </div>
+    <div class="recipe"><div class="recipe-label">Direct recipe</div><div class="ingredients">${mini}${more||(!x.materials.length?'<span class="ingredient">No materials listed</span>':'')}</div></div>
+  </button>`;
+}
+
+function render(){
+  renderCategories();
+  $("#levelCaption").textContent=`Level ${state.level}`;
+  $("#levelNum").value=state.level; $("#levelRange").value=state.level; $("#techLevelBadge").textContent=state.level;
+  const rows=filteredItems();
+  $("#resultCount").textContent=rows.length.toLocaleString();
+  $("#levelHint").textContent=state.mode==="exact"?`Unlocks at Level ${state.level}`:`Level ${state.level} and below`;
+  $("#craftGrid").innerHTML=rows.length?rows.map(cardHTML).join(""):`<div class="empty">No recipes match these filters.</div>`;
+  $$("#craftGrid .card").forEach(c=>c.onclick=()=>openDetail(c.dataset.key));
+  renderTech();
+}
+
+function childForMaterial(m){
+  return (m.dev_name&&state.byKey.get(m.dev_name)) || lookupByName(m.name) || null;
+}
+
+function rawMaterials(item, qty){
+  const totals=new Map();
+  const add=(name,n)=>{
+    if(!totals.has(name)) totals.set(name,0);
+    totals.set(name,totals.get(name)+n);
+  };
+  function walk(x, needed, path){
+    const output=Math.max(1,Number(x.creates_amount)||1);
+    const batches=Math.ceil(needed/output);
+    if(!x.materials?.length){ add(x.name,needed); return; }
+    for(const m of x.materials){
+      const need=m.amount*batches;
+      const child=childForMaterial(m);
+      const cycle=child && path.has(child.key);
+      const canExpand=child && child.craftable && child.materials?.length && !cycle;
+      if(canExpand){
+        const next=new Set(path); next.add(child.key); walk(child,need,next);
+      } else add(m.name,need);
+    }
+  }
+  walk(item,qty,new Set([item.key]));
+  return [...totals.entries()].map(([name,amount])=>({name,amount}));
+}
+
+function directForQty(item,qty){
+  const batches=Math.ceil(qty/Math.max(1,item.creates_amount||1));
+  return item.materials.map(m=>({name:m.name,amount:m.amount*batches}));
+}
+function recipeRows(rows, withWhere=false){
+  if(!rows.length) return `<div class="meta">No material recipe listed.</div>`;
+  return rows.map(r=>`<div class="reciperow ${withWhere?"baserow":""}">
+    <span>${escapeHTML(r.name)}</span>
+    <strong>×${formatNum(r.amount)}</strong>
+    ${withWhere?`<button class="wherebtn" data-where="${escapeAttr(r.name)}">Where to get</button>`:""}
+  </div>`).join("");
+}
+
+function componentNodeHTML(name, needed, depth=0, path=new Set()){
+  const child=lookupByName(name);
+  if(!child || !child.materials?.length || path.has(child.key)){
+    return `<div class="craftnode">
+      <div class="leafrow"><span class="nodename">${escapeHTML(name)}</span><span class="nodeqty">×${formatNum(needed)}</span><button class="wherebtn" data-where="${escapeAttr(name)}">Where to get</button></div>
+    </div>`;
+  }
+  const output=Math.max(1,Number(child.creates_amount)||1);
+  const batches=Math.ceil(needed/output);
+  const parts=child.materials.map(m=>({name:m.name,amount:m.amount*batches}));
+  const formula=parts.map(p=>`${escapeHTML(p.name)} [${formatNum(p.amount)}]`).join(" + ");
+  const next=new Set(path); next.add(child.key);
+  return `<div class="craftnode">
+    <div class="nodehead"><span class="nodename">${escapeHTML(name)}</span><span class="nodeqty">×${formatNum(needed)}</span></div>
+    <div class="formula">{ ${formula} }${child.station?` • ${escapeHTML(child.station)}`:""}</div>
+    <div class="craftchildren">${parts.map(p=>componentNodeHTML(p.name,p.amount,depth+1,next)).join("")}</div>
+  </div>`;
+}
+function componentTreeHTML(item,qty){
+  const direct=directForQty(item,qty);
+  if(!direct.length) return `<div class="meta">No component recipe listed.</div>`;
+  return direct.map(r=>componentNodeHTML(r.name,r.amount,0,new Set([item.key]))).join("");
+}
+
+function parseDropName(line){
+  const m=String(line).match(/^Dropped by (.+?)(?: x[\d–-]+)? \(/);
+  return m?m[1].trim():null;
+}
+function acquisitionInfo(name){
+  const sec=state.secondaryByName.get(norm(name));
+  const res=state.resourceByName.get(norm(name));
+  const obtained=sec?.obtained_from||[];
+  const drops=obtained.filter(x=>x.startsWith("Dropped by "));
+  const merchants=obtained.filter(x=>x.startsWith("Sold by "));
+  const other=obtained.filter(x=>!x.startsWith("Dropped by ")&&!x.startsWith("Sold by "));
+  return {sec,res,obtained,drops,merchants,other};
+}
+function palSourceHTML(line){
+  const palName=parseDropName(line);
+  const p=palName?state.palLocations[palName]:null;
+  let detail="";
+  if(p){
+    const regions=(p.regions||[]).slice(0,4);
+    const alphas=(p.alpha_locations||[]).slice(0,2);
+    const bits=[];
+    if(regions.length) bits.push(`Regions: ${regions.join(", ")}`);
+    if(alphas.length) bits.push(`Alpha: ${alphas.join(" • ")}`);
+    if(bits.length) detail=`<div class="locationnote">${escapeHTML(bits.join(" | "))}</div>`;
+  }
+  return `<div class="obtain"><b>${escapeHTML(line)}</b>${detail}</div>`;
+}
+function renderAcquisition(name){
+  state.acquisitionName=name;
+  const box=$("#acquisitionPanel"); if(!box)return;
+  const {res,obtained,drops,merchants,other}=acquisitionInfo(name);
+  const best=res?.best_locations||[];
+  const mapCount=MAP_NODE_COUNTS[norm(name)]||null;
+  const mapLabel=MAP_LABELS[norm(name)]||name;
+
+  let bestHTML="";
+  if(best.length){
+    bestHTML=`<h4 style="margin:11px 0 8px">Best Farming Locations</h4><div class="locationgrid">`+
+      best.map(x=>`<div class="locationcard"><strong>${escapeHTML(x.area||"Location")}</strong>
+        ${x.coordinates?`<span class="coord">${escapeHTML(x.coordinates)}</span>`:""}
+        ${x.node_count?`<div class="smallmuted">${x.node_count} known node${x.node_count===1?"":"s"}</div>`:""}
+        ${x.notes?`<div class="locationnote">${escapeHTML(x.notes)}</div>`:""}
+      </div>`).join("")+`</div>`;
+  }
+
+  let mapHTML="";
+  if(mapCount){
+    mapHTML=`<div style="margin-top:10px"><a class="maplink" target="_blank" rel="noreferrer" href="https://palworld.gg/map">Open all ${mapCount.toLocaleString()} mapped ${escapeHTML(mapLabel)} nodes on Palworld.gg ↗</a>
+      <div class="smallmuted" style="margin-top:5px">The full node layer stays on the interactive source map instead of dumping hundreds or thousands of coordinate rows into this recipe panel.</div></div>`;
+  }
+
+  let practical="";
+  const topDrops=drops.slice(0,8);
+  const topMerchants=merchants.slice(0,6);
+  if(topDrops.length||topMerchants.length||other.length){
+    practical=`<h4 style="margin:12px 0 7px">Other Ways to Get It</h4><div class="obtain-list">`+
+      topMerchants.map(x=>`<div class="obtain"><b>${escapeHTML(x)}</b></div>`).join("")+
+      topDrops.map(palSourceHTML).join("")+
+      other.slice(0,8).map(x=>`<div class="obtain">${escapeHTML(x)}</div>`).join("")+`</div>`;
+  }
+
+  let all="";
+  if(obtained.length){
+    all=`<details class="detailsbox"><summary>View all documented acquisition routes (${obtained.length})</summary>
+      <div class="obtain-list">${obtained.map(x=>x.startsWith("Dropped by ")?palSourceHTML(x):`<div class="obtain">${escapeHTML(x)}</div>`).join("")}</div>
+    </details>`;
+  }
+
+  if(!best.length&&!obtained.length&&!mapCount){
+    box.innerHTML=`<div class="locationtitle"><div><h3>Where to Get: ${escapeHTML(name)}</h3><div class="smallmuted">No verified acquisition details are loaded for this material yet.</div></div></div>`;
+    return;
+  }
+  box.innerHTML=`<div class="locationtitle"><div><h3>Where to Get: ${escapeHTML(name)}</h3><div class="smallmuted">Best locations first, then the full documented source list.</div></div></div>${bestHTML}${mapHTML}${practical}${all}`;
+}
+function bindWhereButtons(){
+  $$("#modalBack .wherebtn").forEach(b=>b.onclick=()=>renderAcquisition(b.dataset.where));
+}
+
+function openDetail(key){
+  const x=state.byKey.get(key); if(!x)return;
+  state.selected=x; state.detailQty=1; state.acquisitionName=null; $("#detailQty").value=1;
+  $("#modalName").textContent=x.name;
+  $("#modalIcon").innerHTML=iconHTML(x);
+  $("#modalMeta").textContent=`${x.category} • ${x.availabilityKind}`;
+  $("#modalDesc").textContent=x.description || "No description available.";
+  const lvl=Number.isFinite(x.effectiveLevel)?`Level ${x.effectiveLevel}`:"Special / not level-gated";
+  $("#modalFacts").innerHTML=[
+    ["Practical availability",lvl],["Own tech level",Number.isFinite(x.directLevel)?`Lv ${x.directLevel}`:"—"],
+    ["Crafting station",x.station||"Not specified"],["Station level",Number.isFinite(x.stationLevel)?`Lv ${x.stationLevel}`:"—"],
+    ["Craft output",`×${x.creates_amount||1} per batch`],["Category",x.category]
+  ].map(([a,b])=>`<div class="fact"><span>${a}</span><strong>${escapeHTML(String(b))}</strong></div>`).join("");
+  $("#patchNote").innerHTML=x.patchNote?`<div class="patch">${escapeHTML(x.patchNote)}</div>`:"";
+  updateDetailLists();
+  $("#modalBack").classList.add("open");
+}
+function updateDetailLists(){
+  const x=state.selected; if(!x)return;
+  const qty=Math.max(1,Math.min(9999,Number($("#detailQty").value)||1)); state.detailQty=qty;
+  const batches=Math.ceil(qty/Math.max(1,x.creates_amount||1));
+  $("#batchHint").textContent=x.creates_amount>1?`${batches} crafting batch${batches===1?"":"es"} (${x.creates_amount} output each)`:`${batches} crafting batch${batches===1?"":"es"}`;
+  $("#directList").innerHTML=recipeRows(directForQty(x,qty));
+  $("#componentTree").innerHTML=componentTreeHTML(x,qty);
+  const raws=rawMaterials(x,qty);
+  $("#rawList").innerHTML=recipeRows(raws,true);
+  bindWhereButtons();
+  const keep=state.acquisitionName && raws.some(r=>r.name===state.acquisitionName);
+  renderAcquisition(keep?state.acquisitionName:(raws[0]?.name||x.name));
+}
+
+function renderTech(){
+  if(!state.items.length)return;
+  const q=norm($("#techSearch")?.value||"");
+  const vis=$("#techVisibility")?.value||"all";
+  let tech=state.items.filter(x=>Number.isFinite(x.directLevel) && x.directLevel>=1 && x.directLevel<=80);
+  if(q) tech=tech.filter(x=>x.searchText.includes(q));
+  const groups=new Map();
+  for(const x of tech){
+    if(vis==="available" && x.directLevel>state.level) continue;
+    if(vis==="future" && x.directLevel<=state.level) continue;
+    if(!groups.has(x.directLevel))groups.set(x.directLevel,[]);
+    groups.get(x.directLevel).push(x);
+  }
+  const html=[...groups.keys()].sort((a,b)=>a-b).map(lvl=>{
+    const arr=groups.get(lvl).sort((a,b)=>a.name.localeCompare(b.name));
+    return `<div class="levelgroup ${lvl>state.level?"future":""}">
+      <div class="leveltitle"><strong>Level ${lvl}</strong><span class="meta">${arr.length} unlock${arr.length===1?"":"s"}</span></div>
+      <div class="unlocks">${arr.map(x=>`<button class="unlock" data-key="${escapeAttr(x.key)}"><span style="width:25px;height:25px;display:grid;place-items:center">${iconHTML(x)}</span>${escapeHTML(x.name)}</button>`).join("")}</div>
+    </div>`;
+  }).join("");
+  $("#techTree").innerHTML=html||`<div class="empty">No technology unlocks match.</div>`;
+  $$("#techTree .unlock").forEach(b=>b.onclick=()=>openDetail(b.dataset.key));
+}
+
+function formatNum(n){ return Number(n).toLocaleString(undefined,{maximumFractionDigits:2}); }
+function escapeHTML(s){ return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c])); }
+function escapeAttr(s){ return escapeHTML(s); }
+
+function setLevel(v){
+  state.level=Math.max(1,Math.min(80,Number(v)||1));
+  localStorage.setItem("palCraftLevel",state.level);
+  render();
+}
+function showNotice(msg){ $("#noticeArea").innerHTML=msg?`<div class="notice" style="margin-top:14px">${msg}</div>`:""; }
+
+async function fetchWithTimeout(url, ms=4500){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),ms);
+  try{return await fetch(url,{signal:controller.signal,cache:"default"});}
+  finally{clearTimeout(timer);}
+}
+async function loadData(){
+  try{
+    const [pRes,sRes,rRes,palRes]=await Promise.allSettled([
+      fetchWithTimeout(PRIMARY_URL,7000),
+      fetchWithTimeout(SECONDARY_URL,7000),
+      fetchWithTimeout(RESOURCE_URL,7000),
+      fetchWithTimeout(PAL_LOCATIONS_URL,7000)
+    ]);
+    if(pRes.status!=="fulfilled" || !pRes.value.ok) throw new Error("Primary recipe dataset unavailable");
+    const primary=await pRes.value.json();
+    let secondary=DEMO_SECONDARY, resources=DEMO_RESOURCES, pals=DEMO_PALS;
+    if(sRes.status==="fulfilled" && sRes.value.ok) secondary=await sRes.value.json();
+    if(rRes.status==="fulfilled" && rRes.value.ok) resources=await rRes.value.json();
+    if(palRes.status==="fulfilled" && palRes.value.ok) pals=await palRes.value.json();
+
+    buildData(primary,secondary);
+    state.resourceByName=new Map((resources?.resources||[]).map(r=>[norm(r.name),r]));
+    state.palLocations=pals?.pals||{};
+
+    state.dataMode="live";
+    $("#dataStatus").textContent=`Live data • ${state.items.length.toLocaleString()} craftables • locations`;
+    $("#dataStatus").className="badge live";
+    showNotice("");
+  }catch(err){
+    console.warn(err);
+    buildData(DEMO_PRIMARY,DEMO_SECONDARY);
+    state.resourceByName=new Map((DEMO_RESOURCES.resources||[]).map(r=>[norm(r.name),r]));
+    state.palLocations=DEMO_PALS.pals||{};
+    state.dataMode="offline";
+    $("#dataStatus").textContent="Offline demo data";
+    $("#dataStatus").className="badge warn";
+    showNotice("Live recipe/location data could not be reached. The app is showing a small built-in demo set. Connect to the internet and reload for the full Palworld database, acquisition routes, locations, and icons.");
+  }
+  render();
+}
+function bind(){
+  $$(".tab").forEach(t=>t.onclick=()=>{
+    $$(".tab").forEach(x=>x.classList.remove("active")); $$(".panel").forEach(x=>x.classList.remove("active"));
+    t.classList.add("active"); $("#"+t.dataset.tab).classList.add("active");
+    if(t.dataset.tab==="tech")renderTech();
+  });
+  $("#levelDown").onclick=()=>setLevel(state.level-1); $("#levelUp").onclick=()=>setLevel(state.level+1);
+  $("#levelNum").onchange=e=>setLevel(e.target.value); $("#levelRange").oninput=e=>setLevel(e.target.value);
+  $("#search").oninput=e=>{state.search=e.target.value;render();};
+  $("#mode").onchange=e=>{state.mode=e.target.value;render();};
+  $("#sort").onchange=e=>{state.sort=e.target.value;render();};
+  $("#showSpecial").onchange=e=>{state.showSpecial=e.target.checked;render();};
+  $("#techSearch").oninput=()=>renderTech(); $("#techVisibility").onchange=()=>renderTech();
+  $("#modalClose").onclick=()=>$("#modalBack").classList.remove("open");
+  $("#modalBack").onclick=e=>{if(e.target===$("#modalBack"))$("#modalBack").classList.remove("open");};
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#modalBack").classList.remove("open");});
+  $("#detailQty").oninput=updateDetailLists;
+  $("#copyRaw").onclick=async()=>{
+    if(!state.selected)return;
+    const rows=rawMaterials(state.selected,state.detailQty);
+    const text=`${state.selected.name} ×${state.detailQty}\n`+rows.map(r=>`${r.name}: ${formatNum(r.amount)}`).join("\n");
+    try{await navigator.clipboard.writeText(text); $("#copyRaw").textContent="Copied"; setTimeout(()=>$("#copyRaw").textContent="Copy list",900);}
+    catch{alert(text);}
+  };
+}
+bind();
+setLevel(state.level);
+loadData();
+</script>
+</body>
+</html>
