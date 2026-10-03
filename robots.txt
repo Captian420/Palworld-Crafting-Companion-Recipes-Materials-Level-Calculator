@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://captian420.github.io/Palworld-Crafting-Companion-Recipes-Materials-Level-Calculator/sitemap.xml
