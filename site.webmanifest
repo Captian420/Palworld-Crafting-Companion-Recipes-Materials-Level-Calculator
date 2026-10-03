@@ -1,0 +1,11 @@
+{
+  "name": "Palworld Crafting Companion",
+  "short_name": "Pal Crafting",
+  "description": "Palworld crafting recipes filtered by player level, with materials and acquisition locations.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#07121b",
+  "theme_color": "#07121b",
+  "icons": []
+}
